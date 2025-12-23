@@ -72,7 +72,8 @@ def predict(metadata: List, batch=10) -> List[Dict]:
             all_result.append(
                 {
                     **meta,
-                    "detection": det
+                    "detection": detections_json,
+                    "total_detect": len(detections_json)
                 }
             )
 
