@@ -3,13 +3,8 @@ from datetime import datetime
 import subprocess
 import cv2
 import os
-from gps import extract_gps, find_nearest_gps
+from .gps import extract_gps, find_nearest_gps
 from datetime import datetime, timedelta
-
-DIR_FILE = os.path.dirname(os.path.abspath(__file__))
-VIDEOS_PATH = os.path.join(DIR_FILE, 'videos')
-IMAGES_PATH = os.path.join(DIR_FILE, 'images')
-GPS_PATH = os.path.join(DIR_FILE, 'gps')
 
 
 def get_video_creation_time(video_path: str) -> datetime:
@@ -29,26 +24,20 @@ def get_video_creation_time(video_path: str) -> datetime:
     return datetime.fromisoformat(output.replace("Z", "+00:00"))
 
 
-def mapping():
-    pass
+def combine_gps_frame(video_file, gps_file, images_path):
 
-
-def combine_gps_frame(video_file, gps_file):
-
-    video_path = os.path.join(VIDEOS_PATH, video_file)
-
-    if not os.path.exists(video_path):
+    if not os.path.exists(video_file):
         raise ValueError(f"File {video_file} not found")
 
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_file)
     fps = cap.get(cv2.CAP_PROP_FPS)
 
     idx_frame = 0
     saved = 0
     frame_interval = int(fps * 1)
 
-    gps_points = extract_gps(os.path.join(GPS_PATH, gps_file))
-    VIDEO_START_TIME = get_video_creation_time(video_path=video_path)
+    gps_points = extract_gps(gps_file)
+    VIDEO_START_TIME = get_video_creation_time(video_path=video_file)
 
     initial_offset = (
         gps_points[0]["time"] - VIDEO_START_TIME
@@ -75,9 +64,9 @@ def combine_gps_frame(video_file, gps_file):
                 idx_frame += 1
                 continue
             saved += 1
-            os.makedirs(IMAGES_PATH, exist_ok=True)
+            os.makedirs(images_path, exist_ok=True)
             img_name = f"frame_{idx_frame:05d}.jpg"
-            img_abs_path = os.path.join(IMAGES_PATH, img_name)
+            img_abs_path = os.path.join(images_path, img_name)
             img_rel_path = os.path.join("images", img_name)
             cv2.imwrite(img_abs_path, frame)
 

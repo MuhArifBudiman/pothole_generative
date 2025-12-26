@@ -1,3 +1,9 @@
 videos/
 venv/
 __pycache__/
+models/
+*.pt
+test.py
+hasil_prediksi/
+images/sample_1/
+*.json
