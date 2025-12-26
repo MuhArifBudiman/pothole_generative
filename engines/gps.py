@@ -2,13 +2,19 @@ import json
 import gpxpy
 from typing import List, Dict
 from datetime import datetime
+import os
+
+JOBS_DIR = "jobs"
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def extract_gps(gps_file: str) -> List[Dict]:
+def extract_gps(job_id, gps_file: str) -> List[Dict]:
+    job_path = os.path.join(ROOT_DIR, JOBS_DIR, job_id)
+
     if not gps_file.endswith(".gpx"):
         raise ValueError("Please input gpx format file")
 
-    with open(gps_file, "r") as file:
+    with open(os.path.join(job_path, gps_file), "r") as file:
         print("Open gps file")
         gpx = gpxpy.parse(file)
         print("gps file opened")
@@ -46,10 +52,3 @@ def find_nearest_gps(gps_points, target_time: datetime):
             nearest = p
 
     return nearest
-
-
-gps_points = extract_gps("gps/sample.gpx")
-
-print("TOTAL GPS POINTS:", len(gps_points))
-print("FIRST:", gps_points[0])
-print("LAST :", gps_points[-1])

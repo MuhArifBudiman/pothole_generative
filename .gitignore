@@ -7,3 +7,10 @@ test.py
 hasil_prediksi/
 images/sample_1/
 *.json
+logs/
+gps/
+videos/
+jobs/
+# Python cache
+*.py[cod]
+*$py.class

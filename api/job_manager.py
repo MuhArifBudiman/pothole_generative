@@ -1,35 +1,49 @@
 import uuid
 import os
 import json
-from logger import logger
+from .logger import logger
 
 
 JOBS_DIR = "jobs"
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+def get_job_path(job_id):
+    return os.path.join(ROOT_DIR, JOBS_DIR, job_id)
+
+
+def get_job(job_id):
+    path = os.path.join(ROOT_DIR, JOBS_DIR, job_id, "metadata.json")
+
+    if not os.path.exists(path):
+        return None
+
+    with open(path) as f:
+        return json.load(f)
+
+
 def create_job():
-    id = uuid.uuid4().hex[:8]
-    job_path = os.path.join(ROOT_DIR, JOBS_DIR, id)
+    job_id = uuid.uuid4().hex[:8]
+    job_path = os.path.join(ROOT_DIR, JOBS_DIR, job_id)
 
     os.makedirs(os.path.join(job_path, 'raw'), exist_ok=True)
     os.makedirs(os.path.join(job_path, 'frames'), exist_ok=True)
 
     metadata = {
-        "id": id,
+        "id": job_id,
         "status": "queued",
         "progress": 0
     }
 
     with open(f"{job_path}/metadata.json", "w") as file:
         json.dump(metadata, file)
-    logger.info(f"[{id}] Job created")
+    logger.info(f"[{job_id}] Job created")
 
-    return id
+    return job_id
 
 
 def update_job(job_id, **kwargs):
-    path = f"{JOBS_DIR}/{job_id}/metadata.json"
+    path = os.path.join(ROOT_DIR, JOBS_DIR, job_id, "metadata.json")
 
     with open(path) as f:
         data = json.load(f)
