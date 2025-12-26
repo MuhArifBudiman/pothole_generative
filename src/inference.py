@@ -5,20 +5,21 @@ import json
 from typing import List, Dict
 
 DIR_FILE = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(DIR_FILE, "models", "yolo11n-seg.pt")
+ROOT_DIR = os.path.dirname(DIR_FILE)
+MODEL_PATH = os.path.join(ROOT_DIR, "models", "yolo11n-seg.pt")
 
 if not os.path.exists(MODEL_PATH):
     raise ValueError(f"No file directory {MODEL_PATH}")
 else:
     yolo = YOLO(MODEL_PATH)
 
-file = 'metadata.json'
+# file = 'metadata.json'
 
-with open(file, "r") as file:
-    if file:
-        metadata = json.load(file)
-    else:
-        raise ValueError("No metadata")
+# with open(file, "r") as file:
+#     if file:
+#         metadata = json.load(file)
+#     else:
+#         raise ValueError("No metadata")
 
 
 def predict(metadata: List, batch=10) -> List[Dict]:
@@ -86,5 +87,10 @@ def save_json(result_file):
 
 
 if __name__ == "__main__":
+    metadata_path = os.path.join(ROOT_DIR, "metadata.json")
+    with open(metadata_path) as file:
+        metadata = json.load(file)
     result = predict(metadata=metadata)
+    print("Success predict")
     save_json(result_file=result)
+    print("Saved to json")
