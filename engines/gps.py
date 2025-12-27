@@ -2,7 +2,9 @@ import gpxpy
 from typing import List, Dict
 from datetime import datetime
 import os
-from api.logger import logger
+import logging
+
+logger = logging.getLogger(__name__)
 
 JOBS_DIR = "jobs"
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
