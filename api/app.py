@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
-from fastapi import UploadFile, BackgroundTasks
+from typing import List, Dict, Any
+from fastapi import UploadFile
 from fastapi import HTTPException
 
 import os
@@ -10,6 +10,7 @@ import json
 
 from .job_manager import create_job, get_job_path, get_job
 from .workers import process_job
+from .logger import logger
 
 from fastapi import FastAPI, UploadFile, File
 
@@ -33,6 +34,7 @@ class ResultResponse(BaseModel):
 
 
 app = FastAPI(title="Pothole Detection")
+logger.info("API STARTED")
 
 
 @app.post("/request", response_model=JobCreateResponse)

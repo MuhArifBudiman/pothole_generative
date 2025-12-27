@@ -3,9 +3,10 @@ import subprocess
 import cv2
 import os
 from datetime import datetime
-import logging
+from api.logger import logger
 
-logger = logging.getLogger(__name__)
+
+# logger = logging.getLogger(__name__)
 
 JOBS_DIR = "jobs"
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,6 +39,8 @@ def get_frame(job_id: str, video_file: str):
 
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
+
+    logger.info(f"[{job_id}] Video FPS detected: {fps}")
 
     idx_frame = 0
     saved = 0
