@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 def combine_gps_frame(frames_data, gps_data):
     gps_created = gps_data[0].get("time")
     video_created = frames_data.get("video_created_at")
+    if video_created is None:
+        video_created = gps_created
 
     initial_offset = (
         gps_created - video_created

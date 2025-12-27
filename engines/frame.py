@@ -1,9 +1,9 @@
-import json
 from datetime import datetime
 import subprocess
 import cv2
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
+from api.logger import logger
 
 JOBS_DIR = "jobs"
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +21,7 @@ def get_video_creation_time(video_file: str) -> datetime:
     output = subprocess.check_output(cmd).decode().strip()
 
     if not output:
-        raise ValueError("creation_time not found")
+        return None
 
     return datetime.fromisoformat(output.replace("Z", "+00:00"))
 
@@ -41,7 +41,11 @@ def get_frame(job_id: str, video_file: str):
     saved = 0
     frame_interval = int(fps * 1)
 
-    video_start_time = get_video_creation_time(video_file=video_path)
+    try:
+        video_start_time = get_video_creation_time(video_file=video_path)
+    except Exception:
+        video_start_time = None
+        logger.warning(f"[{job_id}] Video has no creation time")
 
     metadata = {
         "job_id": job_id,

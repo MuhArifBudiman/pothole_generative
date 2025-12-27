@@ -1,4 +1,3 @@
-import json
 import gpxpy
 from typing import List, Dict
 from datetime import datetime
