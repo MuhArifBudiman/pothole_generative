@@ -2,6 +2,7 @@ import gpxpy
 from typing import List, Dict
 from datetime import datetime
 import os
+from api.logger import logger
 
 JOBS_DIR = "jobs"
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -14,9 +15,8 @@ def extract_gps(job_id, gps_file: str) -> List[Dict]:
         raise ValueError("Please input gpx format file")
 
     with open(os.path.join(job_path, gps_file), "r") as file:
-        print("Open gps file")
         gpx = gpxpy.parse(file)
-        print("gps file opened")
+        logger.info(f"GPS [{job_id}] opened")
 
     # ------ EXTRACT GPS-------
     points = []
