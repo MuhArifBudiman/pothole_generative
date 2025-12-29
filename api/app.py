@@ -24,6 +24,7 @@ class JobStatusResponse(BaseModel):
     job_id: str
     progress: int
     status: str
+    stage: str
 
 
 class ResultResponse(BaseModel):
@@ -71,7 +72,8 @@ def get_job_status(job_id: str):
     return {
         "job_id": job_id,
         "status": job["status"],
-        "progress": job.get("progress", 0)
+        "progress": job.get("progress", 0),
+        "stage":job.get("stage")
     }
 
 

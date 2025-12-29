@@ -13,7 +13,7 @@ def get_job_path(job_id):
 
 
 def get_job(job_id):
-    path = os.path.join(ROOT_DIR, JOBS_DIR, job_id, "metadata.json")
+    path = os.path.join(ROOT_DIR, JOBS_DIR, job_id, "job.json")
 
     if not os.path.exists(path):
         return None
@@ -31,11 +31,12 @@ def create_job():
 
     metadata = {
         "id": job_id,
-        "status": "queued",
-        "progress": 0
+        "status": "processing",
+        "progress": 0,
+        "stage":"starting to extract"
     }
 
-    with open(f"{job_path}/metadata.json", "w") as file:
+    with open(f"{job_path}/job.json", "w") as file:
         json.dump(metadata, file)
     logger.info(f"[{job_id}] Job created")
 
@@ -43,7 +44,7 @@ def create_job():
 
 
 def update_job(job_id, **kwargs):
-    path = os.path.join(ROOT_DIR, JOBS_DIR, job_id, "metadata.json")
+    path = os.path.join(ROOT_DIR, JOBS_DIR, job_id, "job.json")
 
     with open(path) as f:
         data = json.load(f)

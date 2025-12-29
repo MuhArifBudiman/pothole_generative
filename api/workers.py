@@ -23,31 +23,33 @@ def process_job(job_id):
         gps_file = "track.gpx"
 
         # 1. GPS processing
+        
+        update_job(job_id=job_id, progress=25, stage="Extract GPS")
         gps_data = extract_gps(job_id=job_id,
                                gps_file=f"raw/{gps_file}")
-        update_job(job_id=job_id, progress=25)
         logger.info(f"[{job_id}] GPS extracted")
 
         # 2. Frame
+        update_job(job_id=job_id, progress=50, stage="Extract Frames")
         frames_data = get_frame(
             job_id=job_id,
             video_file=f"raw/{video_file}"
         )
-        update_job(job_id=job_id, progress=50)
         logger.info(f"[{job_id}] Frames extracted")
 
         # 3 Combine gps and frame
+        update_job(job_id=job_id, progress=70, stage="Combine data Frames with GPS")
         metadata = combine_gps_frame(
             frames_data=frames_data,
             gps_data=gps_data
         )
-        update_job(job_id=job_id, progress=70)
         logger.info(f"[{job_id}] Metadata created!")
 
         with open(os.path.join(job_path, "metadata.json"), "w") as file:
             json.dump(metadata, file, indent=2, default=str)
 
         # 4 Inference YOLO
+        update_job(job_id=job_id, progress=90, stage="Inference with YOLO")
         predict_result = predict(
             job_id=job_id,
             metadata=metadata,
