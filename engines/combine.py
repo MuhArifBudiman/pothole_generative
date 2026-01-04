@@ -41,8 +41,8 @@ def combine_gps_frame(frames_data, gps_data):
         data.update(
             {
                 "gps_time": gps_time.isoformat(),
-                "lat": gps_point["lat"],
-                "lon": gps_point["lon"]
+                "latitude": gps_point["latitude"],
+                "longitude": gps_point["longitude"]
             }
         )
 

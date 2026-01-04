@@ -28,8 +28,8 @@ def extract_gps(job_id, gps_file: str) -> List[Dict]:
         for segment in track.segments:
             for point in segment.points:
                 points.append({
-                    "lat": point.latitude,
-                    "lon": point.longitude,
+                    "latitude": point.latitude,
+                    "longitude": point.longitude,
                     "time": point.time  # datetime (UTC)
                 })
 

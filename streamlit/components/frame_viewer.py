@@ -35,4 +35,4 @@ def render_frame_viewer(df):
         print("No Image")
 
     st.image(image, caption=f"Frame {selected}")
-    st.json(frame_row.to_dict())
+    # st.json(frame_row.to_dict())

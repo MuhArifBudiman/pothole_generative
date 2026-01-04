@@ -3,9 +3,9 @@ import requests
 import time
 from services.api import get_status
 
-st.title("⏳ Processing Job")
-
 job_id = st.session_state.get("job_id")
+st.title(f"⏳ Processing data id: {job_id}")
+
 if not job_id:
     st.warning("No job found")
     st.stop()
@@ -17,7 +17,7 @@ while True:
     res = get_status(job_id=job_id)
     data = res.json()
 
-    progress = data.get("progress",0)   
+    progress = data.get("progress", 0)
     stage = data.get("stage")   # 0–100
 
     progress_bar.progress(progress)

@@ -11,10 +11,11 @@ def flatten_result(result: list) -> pd.DataFrame:
                 "frame_file": item["frame_file"],
                 "frame_result_file": item["frame_result_file"],
                 "gps_time": item["gps_time"],
-                "lat": item["lat"],
-                "lon": item["lon"],
+                "latitude": item["latitude"],
+                "longitude": item["longitude"],
                 "class_id": det["class_id"],
                 "confidence": det["confidence"],
                 "bbox": det["bbox"],
+                "total_detect": item['total_detect']
             })
     return pd.DataFrame(rows)

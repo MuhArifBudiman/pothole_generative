@@ -1,30 +1,34 @@
 import streamlit as st
 import pydeck as pdk
 
+
 def render_map(df):
     if df.empty:
         st.warning("No data to display")
         return
 
     map_df = (
-        df.groupby(["lat", "lon"])
-        .size()
+        df.groupby(["longitude", "latitude"]).size()
         .reset_index(name="total_detect")
     )
 
-    layer = pdk.Layer(
-        "ScatterplotLayer",
-        map_df,
-        get_position='[lon, lat]',
-        get_radius="total_detect * 3",
-        pickable=True
-    )
+    layer = pdk.Layer("ScatterplotLayer",
+                      map_df, get_position='[longitude, latitude]',
+                      get_radius="total_detect",
+                      pickable=True,
+                      get_fill_color=[10, 201, 90, 180],
+                      tooltip={
+                          "html": """
+    <b>Total Detect:</b> {total_detect}<br/>
+    <b>Latitude:</b> {latitude}<br/>
+    <b>Longitude:</b> {longitude}
+    """,
+                      })
 
-    st.pydeck_chart(pdk.Deck(
+    deck = pdk.Deck(
         initial_view_state=pdk.ViewState(
-            latitude=map_df["lat"].mean(),
-            longitude=map_df["lon"].mean(),
-            zoom=14
-        ),
-        layers=[layer]
-    ))
+            latitude=map_df["latitude"].mean(),
+            longitude=map_df["longitude"].mean(),
+            zoom=14),
+        layers=[layer])
+    st.pydeck_chart(deck)
