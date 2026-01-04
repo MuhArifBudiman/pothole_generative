@@ -24,6 +24,10 @@ def predict(job_id, metadata: Dict, batch=10) -> Dict[Dict, List]:
     batch_meta = []
 
     all_result = []
+
+    frame_result_dir = os.path.join(job_path, "frame_results")
+    os.makedirs(frame_result_dir, exist_ok=True)
+
     if not isinstance(metadata.get("data"), list):
         raise ValueError("There's no frame + gps in metadata")
     else:
@@ -37,6 +41,13 @@ def predict(job_id, metadata: Dict, batch=10) -> Dict[Dict, List]:
                 detection = yolo(batch_images)
 
                 for det, meta in zip(detection, batch_meta):
+                    # SAVE IMAGE
+                    result_img = det.plot()
+                    frame_name = os.path.basename(meta["frame_file"])
+                    save_path = os.path.join(frame_result_dir, frame_name)
+
+                    cv2.imwrite(save_path, result_img)
+
                     detections_json = []
                     boxes = det.boxes
                     if boxes is not None:
@@ -49,6 +60,7 @@ def predict(job_id, metadata: Dict, batch=10) -> Dict[Dict, List]:
                     all_result.append(
                         {
                             **meta,
+                            "frame_result_file": os.path.join("frame_results", frame_name),
                             "detection": detections_json,
                             "total_detect": len(detections_json)
                         }
@@ -61,6 +73,13 @@ def predict(job_id, metadata: Dict, batch=10) -> Dict[Dict, List]:
             detection = yolo(batch_images)
 
             for det, meta in zip(detection, batch_meta):
+                # SAVE IMAGE
+                result_img = det.plot()
+                frame_name = os.path.basename(meta["frame_file"])
+                save_path = os.path.join(frame_result_dir, frame_name)
+
+                cv2.imwrite(save_path, result_img)
+
                 detections_json = []
                 boxes = det.boxes
                 if boxes is not None:
@@ -73,6 +92,7 @@ def predict(job_id, metadata: Dict, batch=10) -> Dict[Dict, List]:
                 all_result.append(
                     {
                         **meta,
+                        "frame_result_file": os.path.join("frame_results", frame_name),
                         "detection": detections_json,
                         "total_detect": len(detections_json)
                     }

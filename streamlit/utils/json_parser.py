@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def flatten_result(result: list) -> pd.DataFrame:
     rows = []
     for item in result:
@@ -8,6 +9,7 @@ def flatten_result(result: list) -> pd.DataFrame:
                 "frame": item["frame"],
                 "time_in_video": item["time_in_video"],
                 "frame_file": item["frame_file"],
+                "frame_result_file": item["frame_result_file"],
                 "gps_time": item["gps_time"],
                 "lat": item["lat"],
                 "lon": item["lon"],
