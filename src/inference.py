@@ -3,21 +3,18 @@ import cv2
 from ultralytics import YOLO
 import json
 from typing import List, Dict
+from .model_v2 import load_model
+
 
 DIR_FILE = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(DIR_FILE)
-MODEL_PATH = os.path.join(ROOT_DIR, "models", "yolo11n-seg.pt")
+# MODEL_PATH = os.path.join(ROOT_DIR, "models", "yolo11n-seg.pt")
 JOBS_DIR = "jobs"
 
-
-def load_model():
-    if not os.path.exists(MODEL_PATH):
-        raise ValueError(f"No file directory {MODEL_PATH}")
-    return YOLO(MODEL_PATH)
+yolo = load_model()
 
 
 def predict(job_id, metadata: Dict, batch=10) -> Dict[Dict, List]:
-    yolo = load_model()
 
     job_path = os.path.join(ROOT_DIR, JOBS_DIR, job_id)
     batch_images = []
