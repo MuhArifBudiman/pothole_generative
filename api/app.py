@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List, Dict, Any
 from fastapi import UploadFile
 from fastapi import HTTPException
+from fastapi.responses import FileResponse
 
 import os
 import shutil
@@ -73,7 +74,7 @@ def get_job_status(job_id: str):
         "job_id": job_id,
         "status": job["status"],
         "progress": job.get("progress", 0),
-        "stage":job.get("stage")
+        "stage": job.get("stage")
     }
 
 
@@ -92,3 +93,17 @@ def get_result(job_id: str):
         result = json.load(f)
 
     return result
+
+
+@app.get("/job/{job_id}/{frame_name}")
+def get_frame(job_id: str, frame_name: str):
+    frame_path = os.path.join(
+        get_job_path(job_id=job_id),
+        "frame_results",
+        frame_name
+    )
+
+    if not os.path.exists(frame_path):
+        raise HTTPException(status_code=404, detail="Frame not found")
+
+    return FileResponse(frame_path, media_type="image/jpeg")
