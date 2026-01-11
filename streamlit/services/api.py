@@ -1,6 +1,6 @@
 import requests
 
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://metalliferous-diploic-phoebe.ngrok-free.dev"
 
 
 def create_job(video, gpx):
