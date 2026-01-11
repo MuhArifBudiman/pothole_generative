@@ -97,8 +97,9 @@ def get_result(job_id: str):
 
 @app.get("/job/{job_id}/{frame_name}")
 def get_frame(job_id: str, frame_name: str):
+    frame_name = os.path.basename(frame_name)
     frame_path = os.path.join(
-        get_job_path(job_id=job_id),
+        get_job_path(job_id=job_id.strip()),
         "frame_results",
         frame_name
     )

@@ -18,9 +18,10 @@ def render_frame_viewer(df):
 
     frame_row = df[df["frame"] == selected].iloc[0]
 
-    # JSON file name: frames/frame_00001.jpg
+    # JSON file name: frame_00001.jpg
     frame_name = os.path.basename(frame_row["frame_result_file"])
-
+    frame_name = frame_name.replace("frame_results\\", "")
+    # st.title(frame_name)
     image_url = f"{BASE_URL}/job/{job_id}/{frame_name}"
 
     image_resp = requests.get(image_url)
