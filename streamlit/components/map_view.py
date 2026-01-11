@@ -11,10 +11,13 @@ def render_map(df):
         df.groupby(["longitude", "latitude"]).size()
         .reset_index(name="total_detect")
     )
+    map_df["radius"] = map_df["total_detect"].apply(
+        lambda x: x * 20.5 if x < 10 else x * 10.5
+    )
 
     layer = pdk.Layer("ScatterplotLayer",
                       map_df, get_position='[longitude, latitude]',
-                      get_radius="total_detect",
+                      get_radius="radius",
                       pickable=True,
                       get_fill_color=[10, 201, 90, 180]
                       )
