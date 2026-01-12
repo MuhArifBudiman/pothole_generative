@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from services.api import create_job
 
-BASE_URL = 'http://127.0.0.1:8000/request'
+BASE_URL = 'https://metalliferous-diploic-phoebe.ngrok-free.dev/request'
 
 st.set_page_config(
     page_title="Upload Data",
