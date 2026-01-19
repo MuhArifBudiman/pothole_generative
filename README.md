@@ -103,6 +103,7 @@ FINAL_PROJECT/
 │   │   ├── frame_viewer.py
 │   │   └── filters.py
 │   └── services/api.py     # API client
+│   └── main.py 
 │
 ├── utils/                  # Utility functions
 │   └── json_parser.py
@@ -111,9 +112,6 @@ FINAL_PROJECT/
 ├── logs/                   # Service logs
 │
 ├── requirements.txt
-├── requirements.api.txt
-├── requirements.streamlit.txt
-└── main.py
 ```
 
 ---
