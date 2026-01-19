@@ -201,6 +201,3 @@ Project: *Road Pothole Detection & Mapping*
 * Dashboard analytics
 
 ---
-
-Jika kamu reviewer / dosen / recruiter:
-👉 project ini menunjukkan **computer vision + backend async processing + data visualization** dalam satu pipeline 🚀
